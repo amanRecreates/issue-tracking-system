@@ -20,16 +20,26 @@ function App() {
     const handleSubmitForm = (e) => {
         e.preventDefault()
         if (body) {                // to ignore empty field save
-            console.log(body);
-            let note = {
-                "body": body,
-                "id": notes.length,
-            }
-            let tempNotes = notes
-            tempNotes.push(note)
-            setNotes(tempNotes)
-            setBody('')
+            const note = {body}
 
+            // POST request, to update the displayed list
+            fetch('http://localhost:8000/notes', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(note)
+            })
+            .then(() => {
+                // Get request, to update the displayed list
+                fetch('http://localhost:8000/notes')
+                .then(res => {
+                    return res.json()
+                })
+                .then(data => {
+                    setNotes(data)
+                })
+            })
         }
     }
 
@@ -38,6 +48,7 @@ function App() {
             <form onSubmit={handleSubmitForm}>
                 <label>Note</label>
                 <input type="text" value={body} onChange={(e) => setBody(e.target.value)}></input>
+                <p>{body}</p>
                 <button>Save</button>
             </form>
             <div className={style.notes}>

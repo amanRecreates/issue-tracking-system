@@ -1,12 +1,12 @@
 {
-    "notes": [
-        {
-            "body": "Hey this is my first note",
-            "id": 0
-        },
-        {
-            "body": "Hey this is my second note",
-            "id": 1
-        }
-    ]
+  "notes": [
+    {
+      "body": "Hey this is my first note",
+      "id": 0
+    },
+    {
+      "body": "Hey this is my second note",
+      "id": 1
+    }
+  ]
 }
