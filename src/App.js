@@ -6,6 +6,8 @@ function App() {
     const [notes, setNotes] = useState(null)
     const [body, setBody] = useState('')
     const [title, setTitle] = useState('')
+    // const [previewImages, setPreviewImages] = useState(null)
+    // const [selectedFiles, setSelectedFiles] = useState(null)
 
     const autofocus = () => {
         document.getElementById('focus-req').focus()
@@ -16,6 +18,7 @@ function App() {
             autofocus()
         }
     }
+
 
     useEffect(() => {
         fetch('http://localhost:8000/notes')
@@ -69,20 +72,39 @@ function App() {
         })
     }
 
+    // const handleSelectedFiles = (e) => {
+    //     let images = []
+
+    //     for(let i=0; i<e.target.files.length; i++) {
+    //         images.push(URL.createObjectURL(e.target.files[i]))
+    //     }
+
+    //     setSelectedFiles(e.target.files)
+    //     setPreviewImages(images)
+    // }
+
     return (
         <div className={style.app}>
             <form onSubmit={handleSubmitForm}>
-                <label>Description</label>
+                <label>Issue</label>
                 <input id="focus-req" required type="text" value={body} onChange={(e) => setBody(e.target.value)}></input>
                 <label>Title</label>
                 <input type="text" value={title} onChange={(e) => setTitle(e.target.value)}></input>
                 <button>Save</button>
             </form>
-            <div className={style.notes}>
+
+            {/* <form>
+                <input type="file" multiple accept="image/*" onChange={handleSelectedFiles}></input>
+            </form>
+            { previewImages && previewImages.map((img, i) => {
+                return <img className={style.preview} src={img} key={i} />
+            })} */}
+
+            <div>
                 <h2>Notes</h2>
                 {notes && notes.map(note => {
                     return (
-                        <div key={note.id}>
+                        <div className={style.notes} key={note.id}>
                             <h2>{note.title}</h2>
                             <p>{note.body}</p>
                             <button onClick={() => handleDelete(note.id)}>Delete</button>
