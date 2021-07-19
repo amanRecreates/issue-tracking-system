@@ -1,10 +1,21 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import style from './App.module.scss';
 
 function App() {
 
-    const [notes, setNotes] = useState([])
+    const [notes, setNotes] = useState(null)
     const [body, setBody] = useState('')
+
+
+    useEffect(() => {
+        fetch('http://localhost:8000/notes')
+            .then(res => {
+                return res.json()
+            })
+            .then(data => {
+                setNotes(data)
+            })
+    }, [])
 
     const handleSubmitForm = (e) => {
         e.preventDefault()
@@ -18,6 +29,7 @@ function App() {
             tempNotes.push(note)
             setNotes(tempNotes)
             setBody('')
+
         }
     }
 
@@ -30,7 +42,7 @@ function App() {
             </form>
             <div className={style.notes}>
                 <h2>Notes</h2>
-                {notes.map(note => <p key={note.id}>{note.body}</p>)}
+                {notes && notes.map(note => <p key={note.id}>{note.body}</p>)}
             </div>
         </div>
     );
