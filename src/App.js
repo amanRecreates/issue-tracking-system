@@ -20,7 +20,7 @@ function App() {
     const handleSubmitForm = (e) => {
         e.preventDefault()
         if (body) {                // to ignore empty field save
-            const note = {body}
+            const note = { body }
 
             // POST request, to update the displayed list
             fetch('http://localhost:8000/notes', {
@@ -29,18 +29,32 @@ function App() {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(note)
-            })
-            .then(() => {
-                // Get request, to update the displayed list
-                fetch('http://localhost:8000/notes')
+            }).then(() => {
+                    // Get request, to update the displayed list
+                    fetch('http://localhost:8000/notes')
+                        .then(res => {
+                            return res.json()
+                        })
+                        .then(data => {
+                            setNotes(data)
+                        })
+                })
+        }
+    }
+
+    const handleDelete = (id) => {
+        fetch('http://localhost:8000/notes/' + id, {
+            method: 'DELETE'
+        }).then(() => {
+            // Get request, to update the displayed list
+            fetch('http://localhost:8000/notes')
                 .then(res => {
                     return res.json()
                 })
                 .then(data => {
                     setNotes(data)
                 })
-            })
-        }
+        })
     }
 
     return (
@@ -53,7 +67,15 @@ function App() {
             </form>
             <div className={style.notes}>
                 <h2>Notes</h2>
-                {notes && notes.map(note => <p key={note.id}>{note.body}</p>)}
+                {notes && notes.map(note => {
+                    return (
+                        <p key={note.id}>
+                            {note.body}
+                            <button onClick={() => handleDelete(note.id)}>Delete</button>
+                        </p>
+                    )
+                }
+                )}
             </div>
         </div>
     );
